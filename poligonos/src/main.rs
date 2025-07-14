@@ -5,6 +5,9 @@ fn main() {
     const WIDTH: usize = 800;
     const HEIGHT: usize = 600;
     const WHITE: u32 = 0xFFFFFF;
+    const GREEN: u32 = 0x00FF00;
+    const RED: u32 = 0xFF0000;
+    const AQUA: u32 = 0x00FFFF;
     const YELLOW: u32 = 0xFFFF00;
 
     #[derive(Clone, Copy)]
@@ -83,32 +86,47 @@ fn main() {
         img.save(filename).unwrap();
     }
 
-    // --- Inicio ejecución ---
     let mut buffer = vec![WHITE; WIDTH * HEIGHT];
-
-    let poly4 = vec![
-        (413, 177), (448, 159), (502, 88), (553, 53), (535, 36), (676, 37), (660, 52),
-        (750, 145), (761, 179), (672, 192), (659, 214), (615, 214), (632, 230),
-        (580, 230), (597, 215), (552, 214), (517, 144), (466, 180)
-    ];
-
-    let poly5 = vec![
-        (682, 175), (708, 120), (735, 148), (739, 170)
-    ];
 
     let convert = |v: Vec<(i32, i32)>| -> Vec<Point> {
         v.into_iter().map(|(x, y)| Point { x, y }).collect()
     };
 
-    let points_poly4 = convert(poly4);
-    let points_poly5 = convert(poly5);
+    // Polígono 1: Verde
+    let poly1 = convert(vec![
+        (165, 380), (185, 360), (180, 330), (207, 345), (233, 330),
+        (230, 360), (250, 380), (220, 385), (205, 410), (193, 383)
+    ]);
+    fill_polygon(&mut buffer, &poly1, GREEN, None);
 
-    fill_polygon(&mut buffer, &points_poly4, YELLOW, Some(&points_poly5));
+    // Polígono 2: Rojo
+    let poly2 = convert(vec![
+        (321, 335), (288, 286), (339, 251), (374, 302)
+    ]);
+    fill_polygon(&mut buffer, &poly2, RED, None);
 
-    let mut window = Window::new("Polígono Amarillo con Agujero", WIDTH, HEIGHT, WindowOptions::default()).unwrap();
+    // Polígono 3: Aqua
+    let poly3 = convert(vec![
+        (377, 249), (411, 197), (436, 249)
+    ]);
+    fill_polygon(&mut buffer, &poly3, AQUA, None);
+
+    // Polígono 4: Amarillo, con agujero Polígono 5
+    let poly4 = convert(vec![
+        (413, 177), (448, 159), (502, 88), (553, 53), (535, 36), (676, 37), (660, 52),
+        (750, 145), (761, 179), (672, 192), (659, 214), (615, 214), (632, 230),
+        (580, 230), (597, 215), (552, 214), (517, 144), (466, 180)
+    ]);
+    let poly5 = convert(vec![
+        (682, 175), (708, 120), (735, 148), (739, 170)
+    ]);
+    fill_polygon(&mut buffer, &poly4, YELLOW, Some(&poly5));
+
+    // Mostrar y guardar imagen
+    let mut window = Window::new("Todos los Polígonos", WIDTH, HEIGHT, WindowOptions::default()).unwrap();
     while window.is_open() && !window.is_key_down(Key::Escape) {
         window.update_with_buffer(&buffer, WIDTH, HEIGHT).unwrap();
     }
 
-    save_buffer_as_png(&buffer, "poligono_con_agujero.png");
+    save_buffer_as_png(&buffer, "todos_los_poligonos.png");
 }
