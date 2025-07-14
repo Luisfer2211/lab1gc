@@ -5,7 +5,7 @@ fn main() {
     const WIDTH: usize = 800;
     const HEIGHT: usize = 600;
     const WHITE: u32 = 0xFFFFFF;
-    const GREEN: u32 = 0x00FF00;
+    const RED: u32 = 0xFF0000;
 
     #[derive(Clone, Copy)]
     struct Point {
@@ -86,21 +86,20 @@ fn main() {
     // --- Inicio ejecución ---
     let mut buffer = vec![WHITE; WIDTH * HEIGHT];
 
-    let poly1 = vec![
-        (165, 380), (185, 360), (180, 330), (207, 345), (233, 330),
-        (230, 360), (250, 380), (220, 385), (205, 410), (193, 383)
+    let poly2 = vec![
+        (321, 335), (288, 286), (339, 251), (374, 302)
     ];
     let convert = |v: Vec<(i32, i32)>| -> Vec<Point> {
         v.into_iter().map(|(x, y)| Point { x, y }).collect()
     };
 
-    let points_poly1 = convert(poly1);
-    fill_polygon(&mut buffer, &points_poly1, GREEN, None);
+    let points_poly2 = convert(poly2);
+    fill_polygon(&mut buffer, &points_poly2, RED, None);
 
-    let mut window = Window::new("Polígono Verde", WIDTH, HEIGHT, WindowOptions::default()).unwrap();
+    let mut window = Window::new("Polígono Rojo", WIDTH, HEIGHT, WindowOptions::default()).unwrap();
     while window.is_open() && !window.is_key_down(Key::Escape) {
         window.update_with_buffer(&buffer, WIDTH, HEIGHT).unwrap();
     }
 
-    save_buffer_as_png(&buffer, "poligono_verde.png");
+    save_buffer_as_png(&buffer, "poligono_rojo.png");
 }
