@@ -5,7 +5,7 @@ fn main() {
     const WIDTH: usize = 800;
     const HEIGHT: usize = 600;
     const WHITE: u32 = 0xFFFFFF;
-    const AQUA: u32 = 0x00FFFF;
+    const YELLOW: u32 = 0xFFFF00;
 
     #[derive(Clone, Copy)]
     struct Point {
@@ -86,20 +86,29 @@ fn main() {
     // --- Inicio ejecución ---
     let mut buffer = vec![WHITE; WIDTH * HEIGHT];
 
-    let poly3 = vec![
-        (377, 249), (411, 197), (436, 249)
+    let poly4 = vec![
+        (413, 177), (448, 159), (502, 88), (553, 53), (535, 36), (676, 37), (660, 52),
+        (750, 145), (761, 179), (672, 192), (659, 214), (615, 214), (632, 230),
+        (580, 230), (597, 215), (552, 214), (517, 144), (466, 180)
     ];
+
+    let poly5 = vec![
+        (682, 175), (708, 120), (735, 148), (739, 170)
+    ];
+
     let convert = |v: Vec<(i32, i32)>| -> Vec<Point> {
         v.into_iter().map(|(x, y)| Point { x, y }).collect()
     };
 
-    let points_poly3 = convert(poly3);
-    fill_polygon(&mut buffer, &points_poly3, AQUA, None);
+    let points_poly4 = convert(poly4);
+    let points_poly5 = convert(poly5);
 
-    let mut window = Window::new("Polígono Aqua", WIDTH, HEIGHT, WindowOptions::default()).unwrap();
+    fill_polygon(&mut buffer, &points_poly4, YELLOW, Some(&points_poly5));
+
+    let mut window = Window::new("Polígono Amarillo con Agujero", WIDTH, HEIGHT, WindowOptions::default()).unwrap();
     while window.is_open() && !window.is_key_down(Key::Escape) {
         window.update_with_buffer(&buffer, WIDTH, HEIGHT).unwrap();
     }
 
-    save_buffer_as_png(&buffer, "poligono_aqua.png");
+    save_buffer_as_png(&buffer, "poligono_con_agujero.png");
 }
