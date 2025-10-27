@@ -9,6 +9,7 @@ fn main() {
     const RED: u32 = 0xFF0000;
     const AQUA: u32 = 0x00FFFF;
     const YELLOW: u32 = 0xFFFF00;
+    const BLUE: u32 = 0x0000FF;
 
     #[derive(Clone, Copy)]
     struct Point {
@@ -97,19 +98,19 @@ fn main() {
         (165, 380), (185, 360), (180, 330), (207, 345), (233, 330),
         (230, 360), (250, 380), (220, 385), (205, 410), (193, 383)
     ]);
-    fill_polygon(&mut buffer, &poly1, GREEN, None);
+    fill_polygon(&mut buffer, &poly1, YELLOW , None);
 
     // Polígono 2: Rojo
     let poly2 = convert(vec![
         (321, 335), (288, 286), (339, 251), (374, 302)
     ]);
-    fill_polygon(&mut buffer, &poly2, RED, None);
+    fill_polygon(&mut buffer, &poly2, BLUE, None);
 
     // Polígono 3: Aqua
     let poly3 = convert(vec![
         (377, 249), (411, 197), (436, 249)
     ]);
-    fill_polygon(&mut buffer, &poly3, AQUA, None);
+    fill_polygon(&mut buffer, &poly3, RED, None);
 
     // Polígono 4: Amarillo, con agujero Polígono 5
     let poly4 = convert(vec![
@@ -120,7 +121,7 @@ fn main() {
     let poly5 = convert(vec![
         (682, 175), (708, 120), (735, 148), (739, 170)
     ]);
-    fill_polygon(&mut buffer, &poly4, YELLOW, Some(&poly5));
+    fill_polygon(&mut buffer, &poly4, GREEN, Some(&poly5));
 
     // Mostrar y guardar imagen
     let mut window = Window::new("Todos los Polígonos", WIDTH, HEIGHT, WindowOptions::default()).unwrap();
